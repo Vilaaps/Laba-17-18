@@ -19,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,6 +44,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     WeatherDashboardScreen()
                 }
+
+
             }
         }
     }
@@ -92,17 +95,24 @@ fun WeatherDashboardScreen(
             Text(text = if (weatherState.isLoading) "Loading..." else "🔄 Refresh Weather")
         }
 
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedButton(
+            onClick = {
+                viewModel.toggleErrorSimulation()
+            }
+        ) {
+            Text(text = "⚠ Simulate Error")
+        }
         if (weatherState.error != null) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = weatherState.loadingProgress,
-                color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.bodySmall
+                text = weatherState.error!!,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }
 }
-
 @Composable
 fun WeatherCard(
     emoji: String,
