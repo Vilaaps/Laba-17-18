@@ -2,6 +2,8 @@ package com.example.myapplication.data
 
 import kotlinx.coroutines.delay
 import kotlin.random.Random
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class WeatherRepository {
     private var shouldFail = false
@@ -15,7 +17,6 @@ class WeatherRepository {
         }
         return Random.nextInt(15, 35)
     }
-
     suspend fun fetchHumidity(): Int {
         delay(1500)
         return Random.nextInt(40, 80)
@@ -24,5 +25,17 @@ class WeatherRepository {
         delay(1000)
         return Random.nextInt(0,20)
     }
-
+    suspend fun calculateWeatherIndex(
+        temp: Int,
+        humidity: Int,
+        wind: Int
+    ): Int{
+        return withContext(Dispatchers.Default){
+            var result = 0
+            for (i in 1..1000000){
+                result += (temp + humidity + wind)/3
+            }
+            result / 1000000
+        }
+    }
 }

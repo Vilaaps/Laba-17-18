@@ -44,8 +44,6 @@ class MainActivity : ComponentActivity() {
                 ) {
                     WeatherDashboardScreen()
                 }
-
-
             }
         }
     }
@@ -73,20 +71,26 @@ fun WeatherDashboardScreen(
             value = weatherState.temperature?.let { "$it°C" } ?: "-",
             isLoading = weatherState.isLoading && weatherState.temperature == null
         )
-
         WeatherCard(
             emoji = "💧",
             title = "Humidity",
             value = weatherState.humidity?.let { "$it%" } ?: "-",
             isLoading = weatherState.isLoading && weatherState.humidity == null
         )
-
         WeatherCard(
             emoji = "🍃",
             title = "Wind Speed",
             value = weatherState.windSpeed?.let { "$it m/s" } ?: "-",
             isLoading = weatherState.isLoading && weatherState.windSpeed == null
         )
+        if (weatherState.weatherIndex != null){
+            WeatherCard(
+                emoji = "📊",
+                title = "Weather Index",
+                value = "${weatherState.weatherIndex}",
+                isLoading = false
+            )
+        }
         Spacer(modifier = Modifier.height(32.dp))
         Button(
             onClick = { viewModel.loadWeatherData() },
@@ -94,7 +98,6 @@ fun WeatherDashboardScreen(
         ) {
             Text(text = if (weatherState.isLoading) "Loading..." else "🔄 Refresh Weather")
         }
-
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedButton(
             onClick = {
